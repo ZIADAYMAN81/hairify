@@ -1,5 +1,7 @@
 # Hairify: Face-Shape Classification and Hairstyle Recommendation
 
+[![tests](https://github.com/ZIADAYMAN81/hairify/actions/workflows/tests.yml/badge.svg)](https://github.com/ZIADAYMAN81/hairify/actions/workflows/tests.yml)
+
 > Graduation project, BSc Computer Science (Artificial Intelligence), The British University in Egypt, 2026. Author: Ziad Ayman.
 
 Hairify classifies a person's **face shape** from a photo (Heart, Oblong, Oval, Round or Square) with a fine-tuned EfficientNet-B3 and recommends hairstyles from a curated styling knowledge base. It is served as a **FastAPI service with a web page**, runs on **ONNX Runtime in a 941 MB CPU Docker image**, and every number below is reproducible with the commands in this README.
@@ -121,3 +123,6 @@ python -m pytest -q        # core tests always run; PyTorch and ONNX tests run w
 ## Tech stack
 
 Python · PyTorch · timm · ONNX · ONNX Runtime · OpenCV · FastAPI · scikit-learn · Docker · pytest
+
+## License
+MIT, see [LICENSE](LICENSE).
