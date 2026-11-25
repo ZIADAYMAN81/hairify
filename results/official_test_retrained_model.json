@@ -1,0 +1,111 @@
+{
+ "images_evaluated": 996,
+ "skipped": 4,
+ "skipped_examples": [
+  [
+   "Oblong/oblong (547).jpg",
+   "no face"
+  ],
+  [
+   "Round/round (424).jpg",
+   "no face"
+  ],
+  [
+   "Round/round (611).jpg",
+   "no face"
+  ],
+  [
+   "Square/square (17).jpg",
+   "no face"
+  ]
+ ],
+ "accuracy": 0.7952,
+ "weighted_f1": 0.7945,
+ "macro_auc": 0.9474,
+ "accuracy_95ci": [
+  0.7701,
+  0.8193
+ ],
+ "macro_auc_95ci": [
+  0.9368,
+  0.9571
+ ],
+ "per_class": {
+  "Heart": {
+   "precision": 0.832,
+   "recall": 0.795,
+   "f1-score": 0.813,
+   "support": 200
+  },
+  "Oblong": {
+   "precision": 0.889,
+   "recall": 0.844,
+   "f1-score": 0.866,
+   "support": 199
+  },
+  "Oval": {
+   "precision": 0.747,
+   "recall": 0.635,
+   "f1-score": 0.686,
+   "support": 200
+  },
+  "Round": {
+   "precision": 0.695,
+   "recall": 0.854,
+   "f1-score": 0.766,
+   "support": 198
+  },
+  "Square": {
+   "precision": 0.833,
+   "recall": 0.849,
+   "f1-score": 0.841,
+   "support": 199
+  }
+ },
+ "confusion_matrix": {
+  "labels": [
+   "Heart",
+   "Oblong",
+   "Oval",
+   "Round",
+   "Square"
+  ],
+  "rows_true_columns_predicted": [
+   [
+    159,
+    5,
+    16,
+    15,
+    5
+   ],
+   [
+    4,
+    168,
+    12,
+    7,
+    8
+   ],
+   [
+    18,
+    8,
+    127,
+    34,
+    13
+   ],
+   [
+    5,
+    4,
+    12,
+    169,
+    8
+   ],
+   [
+    5,
+    4,
+    3,
+    18,
+    169
+   ]
+  ]
+ }
+}

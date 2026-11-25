@@ -5,8 +5,8 @@
 
 Phase 1 trains only the new head on a frozen ImageNet EfficientNet-B3; phase 2 unfreezes the top five blocks.
 `original` reproduces the dissertation recipe (30 + 60 epochs, best validation accuracy kept).
-`regularised` adds stronger augmentation (random resized crops, random erasing), mixed precision and early
-stopping on validation loss, aimed at the 97.7% train vs 73.7% validation gap of the original model.
+`regularised` adds stronger augmentation (random resized crops, random erasing), more weight decay and early
+stopping, aimed at the 97.7% train vs 73.7% validation gap of the original model.
 """
 from __future__ import annotations
 
@@ -103,6 +103,7 @@ def unfreeze_top(model: HairifyModel, n_blocks: int = 5):
 
 
 def train(data: Path, out: Path, recipe: str, seed: int = 42, batch_size: int = 32, device: str | None = None,
+          workers: int = 0,
           max_epochs: int | None = None, pretrained: bool = True) -> dict:
     cfg = dict(RECIPES[recipe])
     if max_epochs is not None:  # for quick smoke tests
@@ -114,12 +115,16 @@ def train(data: Path, out: Path, recipe: str, seed: int = 42, batch_size: int = 
     tr = FolderDataset(data / "train", transforms_for(True, cfg["strong_aug"]))
     va = FolderDataset(data / "val", transforms_for(False, False))
     g = torch.Generator().manual_seed(seed)
-    tl = DataLoader(tr, batch_size, shuffle=True, generator=g, num_workers=0, pin_memory=dev.type == "cuda")
-    vl = DataLoader(va, batch_size, shuffle=False, num_workers=0)
+    # Image decoding and augmentation run on the CPU; extra loader processes keep the GPU busy.
+    extra = {"num_workers": workers, "persistent_workers": workers > 0}
+    tl = DataLoader(tr, batch_size, shuffle=True, generator=g, pin_memory=dev.type == "cuda", **extra)
+    vl = DataLoader(va, batch_size, shuffle=False, **extra)
     counts = np.bincount([y for _, y in tr.items], minlength=len(CLASSES))
     weights = torch.tensor(len(tr) / (len(CLASSES) * np.maximum(counts, 1)), dtype=torch.float32, device=dev)
     criterion = nn.CrossEntropyLoss(weight=weights, label_smoothing=cfg["label_smoothing"])
-    scaler = torch.cuda.amp.GradScaler() if (cfg["strong_aug"] and dev.type == "cuda") else None
+    # Mixed precision on the GPU for every recipe: it changes numerics only slightly and roughly halves memory,
+    # which a 6 GB laptop GPU shared with other applications needs during fine-tuning.
+    scaler = torch.cuda.amp.GradScaler() if dev.type == "cuda" else None
 
     model = HairifyModel(pretrained=pretrained).to(dev)
     history = []
@@ -171,8 +176,10 @@ def main(argv=None):
     p.add_argument("--seed", type=int, default=42)
     p.add_argument("--device", default=None)
     p.add_argument("--max-epochs", type=int, default=None)
+    p.add_argument("--workers", type=int, default=4, help="image loading processes")
     args = p.parse_args(argv)
-    s = train(Path(args.data), Path(args.out), args.recipe, args.seed, device=args.device, max_epochs=args.max_epochs)
+    s = train(Path(args.data), Path(args.out), args.recipe, args.seed, device=args.device, workers=args.workers,
+              max_epochs=args.max_epochs)
     print(json.dumps(s["best"]))
 
 

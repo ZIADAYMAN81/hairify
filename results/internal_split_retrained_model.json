@@ -1,0 +1,94 @@
+{
+ "images_evaluated": 599,
+ "skipped": 0,
+ "skipped_examples": [],
+ "accuracy": 0.8097,
+ "weighted_f1": 0.8098,
+ "macro_auc": 0.9655,
+ "accuracy_95ci": [
+  0.778,
+  0.8397
+ ],
+ "macro_auc_95ci": [
+  0.9556,
+  0.9744
+ ],
+ "per_class": {
+  "Heart": {
+   "precision": 0.83,
+   "recall": 0.775,
+   "f1-score": 0.802,
+   "support": 120
+  },
+  "Oblong": {
+   "precision": 0.877,
+   "recall": 0.833,
+   "f1-score": 0.855,
+   "support": 120
+  },
+  "Oval": {
+   "precision": 0.765,
+   "recall": 0.739,
+   "f1-score": 0.752,
+   "support": 119
+  },
+  "Round": {
+   "precision": 0.748,
+   "recall": 0.842,
+   "f1-score": 0.792,
+   "support": 120
+  },
+  "Square": {
+   "precision": 0.837,
+   "recall": 0.858,
+   "f1-score": 0.848,
+   "support": 120
+  }
+ },
+ "confusion_matrix": {
+  "labels": [
+   "Heart",
+   "Oblong",
+   "Oval",
+   "Round",
+   "Square"
+  ],
+  "rows_true_columns_predicted": [
+   [
+    93,
+    5,
+    9,
+    8,
+    5
+   ],
+   [
+    5,
+    100,
+    5,
+    5,
+    5
+   ],
+   [
+    8,
+    4,
+    88,
+    15,
+    4
+   ],
+   [
+    2,
+    1,
+    10,
+    101,
+    6
+   ],
+   [
+    4,
+    4,
+    3,
+    6,
+    103
+   ]
+  ]
+ }
+}

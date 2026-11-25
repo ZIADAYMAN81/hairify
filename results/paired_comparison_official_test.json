@@ -1,0 +1,22 @@
+{
+ "accuracy": {
+  "old_model": 0.7299,
+  "original_recipe_clean": 0.7861,
+  "regularised_clean": 0.7952
+ },
+ "old_vs_original_recipe_clean": {
+  "only_first_correct": 39,
+  "only_second_correct": 95,
+  "p_value": 0.0
+ },
+ "original_recipe_clean_vs_regularised_clean": {
+  "only_first_correct": 66,
+  "only_second_correct": 75,
+  "p_value": 0.5006
+ },
+ "old_vs_regularised_clean": {
+  "only_first_correct": 57,
+  "only_second_correct": 122,
+  "p_value": 0.0
+ }
+}
