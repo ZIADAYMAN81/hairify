@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Hairify</title>
+<style>
+  :root { --ink:#1d2330; --muted:#5b6472; --line:#dde1e7; --accent:#2f6fb0; --bg:#f7f8fa; --card:#fff; --warn:#9a5b00; }
+  * { box-sizing: border-box; }
+  body { margin:0; font:16px/1.5 system-ui, -apple-system, "Segoe UI", sans-serif; color:var(--ink); background:var(--bg); }
+  main { max-width: 860px; margin: 0 auto; padding: 32px 16px 64px; }
+  h1 { margin:0 0 4px; font-size: 28px; }
+  p.lead { margin:0 0 24px; color:var(--muted); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:10px; padding:20px; margin-bottom:16px; }
+  .row { display:grid; grid-template-columns: 260px 1fr; gap:20px; }
+  @media (max-width: 640px) { .row { grid-template-columns: 1fr; } }
+  canvas { width:100%; border-radius:8px; background:#eef0f3; }
+  label.btn, button { display:inline-block; background:var(--accent); color:#fff; border:0; border-radius:6px; padding:10px 16px; font:inherit; cursor:pointer; }
+  input[type=file] { display:none; }
+  .bar { display:grid; grid-template-columns: 70px 1fr 48px; align-items:center; gap:8px; font-size:14px; margin:4px 0; }
+  .bar span.track { height:10px; background:#e6e9ee; border-radius:5px; overflow:hidden; }
+  .bar span.fill { display:block; height:100%; background:var(--accent); }
+  .style { border-top:1px solid var(--line); padding:10px 0; }
+  .style:first-child { border-top:0; }
+  .muted { color:var(--muted); font-size:14px; }
+  .note { color:var(--warn); font-size:14px; }
+  .error { color:#b42318; }
+</style>
+</head>
+<body>
+<main>
+  <h1>Hairify</h1>
+  <p class="lead">Upload a clear, front-facing photo. Hairify finds the face, estimates its shape and suggests hairstyles. The photo is processed in memory and not stored.</p>
+  <div class="card">
+    <label class="btn" for="file">Choose a photo</label>
+    <input id="file" type="file" accept="image/jpeg,image/png,image/webp">
+    <span id="status" class="muted" style="margin-left:12px"></span>
+  </div>
+  <div id="result" class="card" hidden>
+    <div class="row">
+      <div><canvas id="preview"></canvas><p id="timing" class="muted"></p></div>
+      <div>
+        <h2 id="shape" style="margin:0"></h2>
+        <p id="desc" class="muted"></p>
+        <div id="bars"></div>
+        <p id="close" class="note" hidden></p>
+      </div>
+    </div>
+    <h3>Recommended styles</h3>
+    <div id="styles"></div>
+    <p class="muted"><strong>Avoid:</strong> <span id="avoid"></span></p>
+  </div>
+</main>
+<script>
+const $ = id => document.getElementById(id);
+$("file").addEventListener("change", async e => {
+  const file = e.target.files[0]; if (!file) return;
+  $("status").textContent = "Analysing..."; $("status").className = "muted"; $("result").hidden = true;
+  try {
+    const res = await fetch("/analyse", { method: "POST", headers: { "Content-Type": file.type || "image/jpeg" }, body: file });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.detail || res.statusText);
+    render(file, data); $("status").textContent = "";
+  } catch (err) { $("status").textContent = err.message; $("status").className = "error"; }
+});
+function render(file, d) {
+  const img = new Image();
+  img.onload = () => {
+    const c = $("preview"), s = Math.min(1, 520 / img.width); c.width = img.width * s; c.height = img.height * s;
+    const g = c.getContext("2d"); g.drawImage(img, 0, 0, c.width, c.height);
+    g.strokeStyle = "#2f6fb0"; g.lineWidth = 3; const b = d.face_box;
+    g.strokeRect(b.x * s, b.y * s, b.width * s, b.height * s);
+  };
+  img.src = URL.createObjectURL(file);
+  $("shape").textContent = d.face_shape + " face (" + Math.round(d.confidence * 100) + "% confidence)";
+  $("desc").textContent = d.description;
+  $("bars").innerHTML = Object.entries(d.probabilities).map(([k, v]) =>
+    `<div class="bar"><span>${k}</span><span class="track"><span class="fill" style="width:${v * 100}%"></span></span><span>${Math.round(v * 100)}%</span></div>`).join("");
+  $("close").hidden = !d.close_call;
+  if (d.close_call) $("close").textContent = `Close call with ${d.also_consider.face_shape}: styles for both are shown.`;
+  const styles = d.recommended_styles.concat(d.close_call ? d.also_consider.styles.map(s => ({...s, also: d.also_consider.face_shape})) : []);
+  $("styles").innerHTML = styles.map(s => `<div class="style"><strong>${s.name}</strong>${s.also ? ` <span class="muted">(suits ${s.also})</span>` : ""}
+    <div class="muted">${s.length} · ${s.texture}</div><div>${s.reasoning}</div></div>`).join("");
+  $("avoid").textContent = d.styles_to_avoid.join(", ");
+  $("timing").textContent = `Processed in ${d.timing_ms.total} ms (face detection ${d.timing_ms.face_detection} ms, model ${d.timing_ms.classification} ms)`;
+  $("result").hidden = false;
+}
+</script>
+</body>
+</html>

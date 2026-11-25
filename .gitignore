@@ -25,3 +25,6 @@ outputs/
 Thumbs.db
 .vscode/
 .idea/
+models/
+*.pt
+.pytest_cache/
