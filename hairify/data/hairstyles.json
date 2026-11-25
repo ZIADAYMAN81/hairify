@@ -1,0 +1,251 @@
+{
+ "Oval": {
+  "description": "The oval face is the most versatile - 1.5x longer than wide. Nearly any hairstyle works.",
+  "suited_styles": [
+   {
+    "name": "Long Layers",
+    "length": "Long",
+    "texture": "Wavy",
+    "score": 10,
+    "reasoning": "Showcases natural balance.",
+    "celebrity_eg": "Beyonce"
+   },
+   {
+    "name": "Blunt Bob",
+    "length": "Medium",
+    "texture": "Straight",
+    "score": 9,
+    "reasoning": "Clean horizontal lines frame the face.",
+    "celebrity_eg": "Lupita Nyong'o"
+   },
+   {
+    "name": "Pixie Cut",
+    "length": "Short",
+    "texture": "Any",
+    "score": 8,
+    "reasoning": "Oval faces carry short styles well.",
+    "celebrity_eg": "Halle Berry"
+   },
+   {
+    "name": "Side-Swept Bangs",
+    "length": "Medium to Long",
+    "texture": "Any",
+    "score": 8,
+    "reasoning": "Adds asymmetry without disrupting proportions.",
+    "celebrity_eg": "Jennifer Aniston"
+   },
+   {
+    "name": "Loose Waves",
+    "length": "Long",
+    "texture": "Wavy",
+    "score": 9,
+    "reasoning": "Emphasises the cheekbones.",
+    "celebrity_eg": "Zoe Saldana"
+   }
+  ],
+  "avoid": [
+   "Very voluminous crown",
+   "Perfectly centred sleek part"
+  ]
+ },
+ "Round": {
+  "description": "Round faces have equal width and height. Goal: add vertical length, reduce visual width.",
+  "suited_styles": [
+   {
+    "name": "Long Straight + Centre Part",
+    "length": "Long",
+    "texture": "Straight",
+    "score": 10,
+    "reasoning": "Vertical lines lengthen the face.",
+    "celebrity_eg": "Selena Gomez"
+   },
+   {
+    "name": "High Ponytail",
+    "length": "Versatile",
+    "texture": "Any",
+    "score": 9,
+    "reasoning": "Height at crown elongates.",
+    "celebrity_eg": "Ariana Grande"
+   },
+   {
+    "name": "Layered Lob + Side Part",
+    "length": "Medium",
+    "texture": "Wavy",
+    "score": 8,
+    "reasoning": "Side part breaks symmetry.",
+    "celebrity_eg": "Chrissy Teigen"
+   },
+   {
+    "name": "Deep Side Part + Crown Volume",
+    "length": "Medium to Long",
+    "texture": "Any",
+    "score": 8,
+    "reasoning": "Diagonal lines lengthen.",
+    "celebrity_eg": "Emma Stone"
+   },
+   {
+    "name": "Curtain Bangs",
+    "length": "Medium",
+    "texture": "Textured",
+    "score": 7,
+    "reasoning": "Narrow forehead, add height.",
+    "celebrity_eg": "Zooey Deschanel"
+   }
+  ],
+  "avoid": [
+   "Blunt chin bobs",
+   "Short crops with side volume",
+   "Fluffy wide styles"
+  ]
+ },
+ "Square": {
+  "description": "Square faces have a strong jaw matching forehead width. Goal: soften angles.",
+  "suited_styles": [
+   {
+    "name": "Long Soft Waves",
+    "length": "Long",
+    "texture": "Wavy",
+    "score": 10,
+    "reasoning": "Waves soften angular jaw.",
+    "celebrity_eg": "Olivia Wilde"
+   },
+   {
+    "name": "Side-Swept Fringe",
+    "length": "Any",
+    "texture": "Any",
+    "score": 9,
+    "reasoning": "Breaks straight forehead.",
+    "celebrity_eg": "Angelina Jolie"
+   },
+   {
+    "name": "Layered Bob Below Jaw",
+    "length": "Medium",
+    "texture": "Wavy",
+    "score": 8,
+    "reasoning": "Avoids emphasising jaw width.",
+    "celebrity_eg": "Demi Moore"
+   },
+   {
+    "name": "Curtain Bangs + Layers",
+    "length": "Medium to Long",
+    "texture": "Wavy",
+    "score": 8,
+    "reasoning": "Soft curves frame the face.",
+    "celebrity_eg": "Brigitte Bardot"
+   },
+   {
+    "name": "Loose Updo + Face-Framing",
+    "length": "Long",
+    "texture": "Any",
+    "score": 7,
+    "reasoning": "Height elongates; soft strands soften jaw.",
+    "celebrity_eg": "Charlize Theron"
+   }
+  ],
+  "avoid": [
+   "Blunt fringes",
+   "Bobs exactly at jaw",
+   "Sleek flat styles"
+  ]
+ },
+ "Heart": {
+  "description": "Heart faces have wide forehead tapering to narrow chin. Goal: reduce upper face, add chin volume.",
+  "suited_styles": [
+   {
+    "name": "Chin-Length Bob",
+    "length": "Medium",
+    "texture": "Straight",
+    "score": 10,
+    "reasoning": "Volume at chin widens lower face.",
+    "celebrity_eg": "Reese Witherspoon"
+   },
+   {
+    "name": "Side Part + Volume Below Ears",
+    "length": "Medium to Long",
+    "texture": "Wavy",
+    "score": 9,
+    "reasoning": "Balances narrow chin.",
+    "celebrity_eg": "Jennifer Love Hewitt"
+   },
+   {
+    "name": "Side-Swept Bangs",
+    "length": "Any",
+    "texture": "Any",
+    "score": 8,
+    "reasoning": "Reduces forehead width.",
+    "celebrity_eg": "Zooey Deschanel"
+   },
+   {
+    "name": "Layered Medium",
+    "length": "Medium",
+    "texture": "Wavy",
+    "score": 8,
+    "reasoning": "Volume toward chin adds fullness.",
+    "celebrity_eg": "Halle Berry"
+   },
+   {
+    "name": "Wispy Bangs",
+    "length": "Any",
+    "texture": "Any",
+    "score": 7,
+    "reasoning": "Softens forehead width.",
+    "celebrity_eg": "Audrey Hepburn"
+   }
+  ],
+  "avoid": [
+   "Volume at crown",
+   "Very short styles",
+   "Centre parts"
+  ]
+ },
+ "Oblong": {
+  "description": "Oblong faces are longer than wide. Goal: add width, reduce perceived length.",
+  "suited_styles": [
+   {
+    "name": "Side-Swept Bangs + Side Volume",
+    "length": "Medium",
+    "texture": "Wavy",
+    "score": 10,
+    "reasoning": "Bangs shorten; volume adds width.",
+    "celebrity_eg": "Sarah Jessica Parker"
+   },
+   {
+    "name": "Full Fringe",
+    "length": "Medium to Long",
+    "texture": "Straight",
+    "score": 9,
+    "reasoning": "Breaks long vertical plane.",
+    "celebrity_eg": "Alexa Chung"
+   },
+   {
+    "name": "Voluminous Curls",
+    "length": "Medium",
+    "texture": "Curly",
+    "score": 8,
+    "reasoning": "Side volume counteracts length.",
+    "celebrity_eg": "Winona Ryder"
+   },
+   {
+    "name": "Shoulder-Length Layers",
+    "length": "Medium",
+    "texture": "Layered",
+    "score": 8,
+    "reasoning": "Horizontal volume at shoulder.",
+    "celebrity_eg": "Naomi Watts"
+   },
+   {
+    "name": "Shaggy Bob",
+    "length": "Short to Medium",
+    "texture": "Textured",
+    "score": 7,
+    "reasoning": "Horizontal framing.",
+    "celebrity_eg": "Mia Farrow"
+   }
+  ],
+  "avoid": [
+   "Long straight hair",
+   "Centre parts on long hair",
+   "Very short pixie"
+  ]
+ }
+}

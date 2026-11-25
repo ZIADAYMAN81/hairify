@@ -8,9 +8,9 @@ venv/
 *.env
 
 # Data, models and experiment artefacts (not redistributed)
-data/
+/data/
 datasets/
-models/
+/models/
 *.pt
 *.pth
 *.h5
@@ -25,6 +25,6 @@ outputs/
 Thumbs.db
 .vscode/
 .idea/
-models/
+/models/
 *.pt
 .pytest_cache/
