@@ -27,7 +27,8 @@ def export(weights: str | Path, out: str | Path) -> dict:
     out = Path(out)
     out.parent.mkdir(parents=True, exist_ok=True)
     torch.onnx.export(model, dummy, str(out), opset_version=OPSET, input_names=["images"], output_names=["logits"],
-                      dynamic_axes={"images": {0: "batch"}, "logits": {0: "batch"}}, do_constant_folding=True)
+                      dynamic_axes={"images": {0: "batch"}, "logits": {0: "batch"}}, do_constant_folding=True,
+                      dynamo=False)  # the TorchScript exporter this model was verified with (newer PyTorch defaults to dynamo)
     # Reference logits for a fixed input, so the ONNX side can verify it reproduces PyTorch exactly.
     rng = np.random.default_rng(0)
     faces = [rng.integers(0, 255, (224, 224, 3), dtype=np.uint8) for _ in range(8)]
