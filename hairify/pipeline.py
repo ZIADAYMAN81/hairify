@@ -4,12 +4,13 @@ from __future__ import annotations
 import time
 
 from .face import FaceCropper, decode_image
-from .model import Classifier
 from .recommend import recommend_from_probabilities
 
 
 class Hairify:
-    def __init__(self, classifier: Classifier, cropper: FaceCropper | None = None):
+    def __init__(self, classifier, cropper: FaceCropper | None = None):
+        """`classifier` is any object with `predict_proba(list_of_224x224_rgb_crops) -> (N, 5) array`:
+        `hairify.model.Classifier` (PyTorch) or `hairify.onnx_backend.OnnxClassifier` (ONNX Runtime)."""
         self.classifier = classifier
         self.cropper = cropper or FaceCropper()
 

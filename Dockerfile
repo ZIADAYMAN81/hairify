@@ -1,18 +1,17 @@
-# CPU image for the Hairify API. The model weights are not baked in: mount them at /models.
+# CPU serving image for the Hairify API, using ONNX Runtime (no PyTorch).
+#   python -m hairify.export --weights models/face_shape_classifier.pt --out models/face_shape_classifier.onnx
 #   docker build -t hairify .
-#   docker run -p 8000:8000 -v /path/to/models:/models hairify
+#   docker run -p 8000:8000 -v /path/to/models:/models:ro hairify
 FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1 \
-    HAIRIFY_WEIGHTS=/models/face_shape_classifier.pt
+    HAIRIFY_WEIGHTS=/models/face_shape_classifier.onnx
 
 # OpenCV needs these shared libraries even in headless mode
 RUN apt-get update && apt-get install -y --no-install-recommends libglib2.0-0 libgl1 \
     && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-# CPU-only PyTorch keeps the image far smaller than the CUDA build
-RUN pip install torch==2.5.1 --index-url https://download.pytorch.org/whl/cpu
 COPY requirements-serve.txt .
 RUN pip install -r requirements-serve.txt
 

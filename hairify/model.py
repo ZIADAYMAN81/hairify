@@ -8,9 +8,8 @@ import torch
 import torch.nn as nn
 
 from . import CLASSES
+from .preprocess import to_array
 
-MEAN = np.array([0.485, 0.456, 0.406], dtype=np.float32)
-STD = np.array([0.229, 0.224, 0.225], dtype=np.float32)
 
 
 class HairifyModel(nn.Module):
@@ -30,8 +29,7 @@ class HairifyModel(nn.Module):
 
 def to_tensor(faces: list[np.ndarray]) -> torch.Tensor:
     """List of 224x224 RGB uint8 crops -> normalised NCHW float tensor."""
-    arr = (np.stack(faces).astype(np.float32) / 255.0 - MEAN) / STD
-    return torch.from_numpy(arr.transpose(0, 3, 1, 2).copy())
+    return torch.from_numpy(to_array(faces))
 
 
 class Classifier:

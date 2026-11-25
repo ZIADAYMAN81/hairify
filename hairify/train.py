@@ -30,9 +30,11 @@ MEAN, STD = [0.485, 0.456, 0.406], [0.229, 0.224, 0.225]
 
 RECIPES = {
     "original": {"epochs_head": 30, "epochs_finetune": 60, "lr_head": 1e-3, "lr_finetune": 3e-5,
-                 "label_smoothing": 0.1, "weight_decay": 1e-4, "strong_aug": False, "patience": None},
+                 "label_smoothing": 0.1, "weight_decay": 1e-4, "strong_aug": False, "patience": None,
+                 "finetune_schedule": "cosine"},  # as in the notebook: plateau in phase 1, cosine in phase 2
     "regularised": {"epochs_head": 15, "epochs_finetune": 60, "lr_head": 1e-3, "lr_finetune": 5e-5,
-                    "label_smoothing": 0.1, "weight_decay": 5e-2, "strong_aug": True, "patience": 10},
+                    "label_smoothing": 0.1, "weight_decay": 5e-2, "strong_aug": True, "patience": 10,
+                    "finetune_schedule": "plateau"},
 }
 
 
@@ -134,13 +136,15 @@ def train(data: Path, out: Path, recipe: str, seed: int = 42, batch_size: int = 
     def phase(name, epochs, lr):
         params = [p for p in model.parameters() if p.requires_grad]
         opt = torch.optim.AdamW(params, lr=lr, weight_decay=cfg["weight_decay"])
-        sched = torch.optim.lr_scheduler.ReduceLROnPlateau(opt, mode="max", factor=0.5, patience=6)
+        cosine = name == "finetune" and cfg["finetune_schedule"] == "cosine"
+        sched = (torch.optim.lr_scheduler.CosineAnnealingLR(opt, T_max=epochs) if cosine else
+                 torch.optim.lr_scheduler.ReduceLROnPlateau(opt, mode="max", factor=0.5, patience=6))
         stale = 0
         for ep in range(1, epochs + 1):
             t0 = time.time()
             trl, tra = run_epoch(model, tl, criterion, dev, opt, scaler)
             vll, vla = run_epoch(model, vl, criterion, dev)
-            sched.step(vla)
+            sched.step() if cosine else sched.step(vla)
             history.append({"phase": name, "epoch": ep, "train_loss": round(trl, 4), "train_acc": round(tra, 4),
                             "val_loss": round(vll, 4), "val_acc": round(vla, 4), "seconds": round(time.time() - t0, 1)})
             # The original recipe keeps the best validation accuracy; the regularised one also stops early.

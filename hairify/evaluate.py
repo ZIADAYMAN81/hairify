@@ -17,7 +17,7 @@ from sklearn.metrics import accuracy_score, classification_report, confusion_mat
 
 from . import CLASSES
 from .face import FaceCropper, NoFaceError
-from .model import Classifier
+from .onnx_backend import load_classifier
 
 IMAGE_SUFFIXES = {".jpg", ".jpeg", ".png", ".webp", ".bmp"}
 
@@ -55,7 +55,7 @@ def bootstrap(y, probs, n=1000, seed=0):
     return {"accuracy_95ci": q(acc), "macro_auc_95ci": q(auc)}
 
 
-def evaluate(classifier: Classifier, root: Path, precropped: bool = False) -> dict:
+def evaluate(classifier, root: Path, precropped: bool = False) -> dict:
     faces, y, skipped = load_folder(root, FaceCropper(), precropped)
     probs = classifier.predict_proba(faces)
     pred = probs.argmax(1)
@@ -79,7 +79,7 @@ def main(argv=None):
     p.add_argument("--precropped", action="store_true", help="images are already face crops")
     p.add_argument("--out", default=None, help="write the results to this JSON file")
     args = p.parse_args(argv)
-    res = evaluate(Classifier(args.weights), Path(args.data), args.precropped)
+    res = evaluate(load_classifier(args.weights), Path(args.data), args.precropped)
     text = json.dumps(res, indent=1)
     print(text)
     if args.out:

@@ -1,0 +1,9 @@
+{
+ "requests": 1000,
+ "classified": 996,
+ "no_face_422": 4,
+ "accuracy": 0.7922,
+ "close_calls": 98,
+ "http_latency_ms_median": 64.8,
+ "http_latency_ms_p95": 133.7
+}

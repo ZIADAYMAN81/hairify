@@ -1,6 +1,6 @@
 """HTTP service.
 
-    HAIRIFY_WEIGHTS=models/face_shape_classifier.pt uvicorn app.api:app --port 8000
+    HAIRIFY_WEIGHTS=models/face_shape_classifier.onnx uvicorn app.api:app --port 8000   # or a .pt checkpoint
 
 POST /analyse with the photo as the raw request body (Content-Type image/jpeg, image/png, ...).
 """
@@ -16,7 +16,7 @@ from fastapi.responses import FileResponse
 
 from hairify import __version__
 from hairify.face import MAX_BYTES, InvalidImageError, NoFaceError
-from hairify.model import Classifier
+from hairify.onnx_backend import load_classifier
 from hairify.pipeline import Hairify
 
 log = logging.getLogger("hairify")
@@ -31,15 +31,17 @@ def create_app(engine: Hairify | None = None) -> FastAPI:
 
     def get_engine() -> Hairify:
         if state["engine"] is None:
-            weights = os.environ.get("HAIRIFY_WEIGHTS", "models/face_shape_classifier.pt")
+            weights = os.environ.get("HAIRIFY_WEIGHTS", "models/face_shape_classifier.onnx")
             if not Path(weights).is_file():
                 raise HTTPException(503, f"model weights not found at {weights}; set HAIRIFY_WEIGHTS")
-            state["engine"] = Hairify(Classifier(weights, half=os.environ.get("HAIRIFY_HALF") == "1"))
+            state["engine"] = Hairify(load_classifier(weights))
         return state["engine"]
 
     @app.get("/health")
     def health():
-        return {"status": "ok", "version": __version__, "model_loaded": state["engine"] is not None,
+        engine = state["engine"]
+        backend = type(engine.classifier).__name__ if engine is not None else None
+        return {"status": "ok", "version": __version__, "model_loaded": engine is not None, "backend": backend,
                 "uptime_seconds": round(time.time() - state["started"], 1)}
 
     @app.post("/analyse")

@@ -1,0 +1,52 @@
+{
+ "cpu": "AMD64 Family 25 Model 80 Stepping 0, AuthenticAMD",
+ "results": {
+  "torch_cpu_fp32": {
+   "model_batch1": {
+    "median_ms": 34.1,
+    "p95_ms": 35.8
+   },
+   "full_request": {
+    "median_ms": 39.7,
+    "p95_ms": 43.0
+   },
+   "model_batch32": {
+    "median_ms": 950.0,
+    "p95_ms": 968.1,
+    "images_per_second": 33.7
+   }
+  },
+  "torch_cuda_fp32": {
+   "model_batch1": {
+    "median_ms": 21.1,
+    "p95_ms": 38.9
+   },
+   "full_request": {
+    "median_ms": 26.3,
+    "p95_ms": 44.2
+   },
+   "model_batch32": {
+    "median_ms": 87.9,
+    "p95_ms": 88.0,
+    "images_per_second": 364.1
+   }
+  },
+  "torch_cuda_fp16": {
+   "model_batch1": {
+    "median_ms": 44.8,
+    "p95_ms": 45.4
+   },
+   "full_request": {
+    "median_ms": 30.7,
+    "p95_ms": 43.0
+   },
+   "model_batch32": {
+    "median_ms": 73.7,
+    "p95_ms": 80.3,
+    "images_per_second": 434.2
+   }
+  }
+ },
+ "torch": "2.5.1+cu121",
+ "gpu": "NVIDIA GeForce RTX 3060 Laptop GPU"
+}

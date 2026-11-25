@@ -19,46 +19,46 @@
    "no face"
   ]
  ],
- "accuracy": 0.7861,
- "weighted_f1": 0.7867,
- "macro_auc": 0.9417,
+ "accuracy": 0.744,
+ "weighted_f1": 0.7434,
+ "macro_auc": 0.9286,
  "accuracy_95ci": [
-  0.76,
-  0.8102
+  0.7159,
+  0.7721
  ],
  "macro_auc_95ci": [
-  0.9315,
-  0.9518
+  0.9178,
+  0.9398
  ],
  "per_class": {
   "Heart": {
-   "precision": 0.867,
-   "recall": 0.75,
-   "f1-score": 0.804,
+   "precision": 0.788,
+   "recall": 0.705,
+   "f1-score": 0.744,
    "support": 200
   },
   "Oblong": {
-   "precision": 0.892,
-   "recall": 0.869,
-   "f1-score": 0.88,
+   "precision": 0.839,
+   "recall": 0.839,
+   "f1-score": 0.839,
    "support": 199
   },
   "Oval": {
-   "precision": 0.749,
-   "recall": 0.685,
-   "f1-score": 0.715,
+   "precision": 0.713,
+   "recall": 0.62,
+   "f1-score": 0.663,
    "support": 200
   },
   "Round": {
-   "precision": 0.681,
-   "recall": 0.788,
-   "f1-score": 0.731,
+   "precision": 0.658,
+   "recall": 0.778,
+   "f1-score": 0.713,
    "support": 198
   },
   "Square": {
-   "precision": 0.77,
-   "recall": 0.839,
-   "f1-score": 0.803,
+   "precision": 0.738,
+   "recall": 0.779,
+   "f1-score": 0.758,
    "support": 199
   }
  },
@@ -72,39 +72,39 @@
   ],
   "rows_true_columns_predicted": [
    [
-    150,
-    7,
-    15,
-    16,
-    12
+    141,
+    10,
+    19,
+    20,
+    10
    ],
    [
-    4,
-    173,
     9,
+    167,
+    10,
     5,
     8
    ],
    [
-    9,
-    7,
-    137,
-    35,
-    12
-   ],
-   [
-    4,
-    2,
-    18,
-    156,
+    14,
+    12,
+    124,
+    32,
     18
    ],
    [
+    9,
+    1,
+    15,
+    154,
+    19
+   ],
+   [
     6,
-    5,
-    4,
-    17,
-    167
+    9,
+    6,
+    23,
+    155
    ]
   ]
  }
