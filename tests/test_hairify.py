@@ -147,3 +147,25 @@ def test_api_errors(client):
     no_face = TestClient(create_app(engine(boxes=())))
     r = no_face.post("/analyse", content=jpeg(), headers={"Content-Type": "image/jpeg"})
     assert r.status_code == 422 and "no face" in r.json()["detail"]
+
+
+# ---- training smoke test (CPU, tiny synthetic data, no pretrained download) ------------------------------
+
+def test_training_runs_and_saves_a_loadable_checkpoint(tmp_path):
+    import json
+
+    from hairify.train import train
+
+    rng = np.random.default_rng(0)
+    for split in ("train", "val"):
+        for c in CLASSES:
+            d = tmp_path / "data" / split / c
+            d.mkdir(parents=True)
+            for i in range(3):
+                cv2.imwrite(str(d / f"{i}.jpg"), rng.integers(0, 255, (224, 224, 3), dtype=np.uint8))
+    summary = train(tmp_path / "data", tmp_path / "run", "regularised", device="cpu", max_epochs=1, pretrained=False)
+    assert summary["train_images"] == 15 and len(summary["history"]) == 2
+    saved = json.loads((tmp_path / "run" / "training_summary.json").read_text())
+    assert saved["best"]["epoch"] == 1
+    clf = Classifier(tmp_path / "run" / "face_shape_classifier.pt", device="cpu")
+    assert clf.predict_proba([np.zeros((224, 224, 3), np.uint8)]).shape == (1, 5)
